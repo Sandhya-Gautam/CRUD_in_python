@@ -12,24 +12,26 @@ def create_database(name):
 	
 def update(db, key , value):
 	if result:
-		db1=Database(db)
-		db1.update(key,value)
+		db1=Database(db,conn)
+		print(db1.update(key,value))
 		return "database updated"
 	
 def read(db):
 	if result:
-		return db.read()
+		db1=Database(db,conn)
+		print(db1)
+		return db1.read()
 	else:
 		return "connection failed"
 	
 def delete(db, key):
 	if result:
-		db.delete(key)
+		db1=Database(db,conn)
+		db1.delete(key)
 		return "key deleted"
 	else:
 		return "connection failed"
 
 def get_database():
 	return conn.get_database()
-
 

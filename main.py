@@ -1,33 +1,38 @@
 from fastapi import FastAPI
-import database.py as ds
+from database.database import create_database, update, read, delete, get_database
 
 app = FastAPI()
 
 
 @app.post("/create/")
-def create_item(item:dict):
+def create_data(item:dict):
 	name=item["name"]
-	ds.create(name)
-	return {"msg": "database created" }
+	db=create_database(name)
+	return {"msg": "database created","database":db }
 
 @app.post("/update/")
 def update_item(item:dict):
-	name=item["name"]
+	db=item["database"]
 	key=item["key"]
 	value=item["value"]
-	ds.create(name,key,value)
-	return {"msg": "database updated" }
+	msg=update(db,key,value)
+	return {"msg": msg }
 
 @app.post("/delete/")
 def delete_item(item:dict):
-	name=item["name"]
-	ds.create(name)
-	return {"msg": "database created" }
+	db=item["database"]
+	key=item["key"]
+	msg= delete(db, key)
+	return {"msg":msg}
     
 
-@app.get("/read/")    
-def read_item(items:dict):
-	data=ds.read(items["name"])
+@app.get("/read/{name}")    
+def read_item(name: str):
+	data=read(name)
 	return data 
-    
+
+@app.get("/get_databases/")    
+def read_item():
+	data=get_database()
+	return data   
 
