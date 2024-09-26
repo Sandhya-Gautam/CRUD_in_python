@@ -13,8 +13,7 @@ def create_database(name):
 def update(db, key , value):
 	if result:
 		db1=Database(db,conn)
-		print(db1.update(key,value))
-		return "database updated"
+		return db1.update(key,value)
 	
 def read(db):
 	if result:

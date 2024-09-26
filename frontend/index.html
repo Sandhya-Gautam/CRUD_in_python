@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManageDatabase</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://kit.fontawesome.com/22b3a19f38.js" crossorigin="anonymous"></script>
+    <script src="action.js" defer></script> 
+
+</head>
+
+<body>
+    
+    <div class="container">
+        <div class="databases">
+            <ul>
+                
+            </ul>
+        </div>
+        <div class="record">
+            <p id="output"></p>
+        </div>
+        <div class="actions">
+            <ul>
+                <li><button onclick="form_display(event)" id="create">Create</button></li>
+                <li><button onclick="form_display(event)" id="update">Update</button></li>
+                <li><button onclick="form_display(event)" id="delete">Delete</button></li>
+            </ul>
+        </div>
+        <div class="form">
+            <form action="" id="create_form" class="create form-handler">
+                <label for="dbname">Database Name</label>
+                <input id="dbname" type="text" class="in">
+                <button onclick="create_action(event)">Create</button>
+            </form>
+            <form action="" id="update_form"  class="update form-handler">
+                <label for="dbname">Database Name</label>
+                <input id="dbname" type="text">
+                <label for="key">Key</label>
+                <input id="key" type="text">
+                <label for="value">Value</label>
+                <input id="value" type="text">
+                <button onclick="update_action(event)">Update</button>
+            </form>
+            <form action="" id="delete_form" class="delete form-handler">
+                <label for="dbname">Database Name</label>
+                <input id="dbname" type="text">
+                <label for="key">Key</label>
+                <input id="key" type="text">
+                <button onclick="delete_action(event)">Delete</button>
+            </form>
+        </div>
+    </div>
+
+</body>

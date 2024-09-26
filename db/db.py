@@ -6,20 +6,35 @@ class DBConn:
         self.password = password
         self.conn = None
         self.databases = [] 
-    
+    # to create the connection for authentication
     def create_conn(self):
-        with open('users.json', 'r') as json_file:
-            data = json.load(json_file)
+        #opening the validated user database file 
+        try:
+            with open('users.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "user detail file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
         
+        #checking if the provided username is present or not    
         if self.username in data.keys():
             value = data[self.username]
+            #checking if the password matches or not 
             if value == self.password:
-                
                 self.conn = True
-                with open('database.json', 'r') as json_file:
-                    data = json.load(json_file)
+                try:
+                    #opening the user and associated database record file 
+                    with open('database.json', 'r') as json_file:
+                        data = json.load(json_file)
+                except FileNotFoundError:
+                    return "user-database file not found"
+                except Exception as e:
+                    return "An unexpected error occurred: {str(e)}"
+                #checking if username is present in user and associated database record file 
                 if not self.username in data.keys():
                     data.update({self.username:value})
+                    #writing if username isnot present 
                     with open('database.json', 'w') as json_file:
                         json.dump(data, json_file, indent=4)
                     self.databases=[]
@@ -40,21 +55,33 @@ class DBConn:
             return "No active connection to close"
     
     def is_present(self, name):
-        with open('database.json', 'r') as json_file:
-            data = json.load(json_file)
+        try:
+            with open('database.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "user-database file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
+        
         if name in data[self.username]:
             return True
         else:
             return False
       
     def update_relationalDatabase(self):
-        with open('database.json', 'r') as json_file:
-            data = json.load(json_file)
+        try:
+            with open('database.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "user-database file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
+        
         data.update({self.username:self.databases})
         with open('database.json', 'w') as json_file:
             json.dump(data, json_file, indent=4)
-            
-                        
+
+                      
     def create_database(self, name):
         if self.conn:
             self.update_relationalDatabase()
@@ -89,8 +116,14 @@ class Database:
         if self.name not in self.connection.databases:
             print("No such database in connection")
             return
-        with open(self.name + '.json', 'r') as json_file:
-            data = json.load(json_file)
+        try:
+            with open(self.name+'.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
+        
         data.update({key: value})
         with open(self.name + '.json', 'w') as json_file:
             json.dump(data, json_file, indent=4)
@@ -103,6 +136,13 @@ class Database:
         if self.name not in self.connection.databases:
             print("No such database in connection")
             return
+        try:
+            with open(self.name+'.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
         with open(self.name + '.json', 'r') as json_file:
             data = json.load(json_file)
         if key in data:
@@ -119,13 +159,26 @@ class Database:
         if self.name not in self.connection.databases:
             print("No such database in connection")
             return
+        try:
+            with open('database.json', 'r') as json_file:
+                data = json.load(json_file)
+        except FileNotFoundError:
+            return "file not found"
+        except Exception as e:
+            return "An unexpected error occurred: {str(e)}"
+        
         with open(self.name + '.json', 'r') as json_file:
             data = json.load(json_file)
         return data
 
 def create_acc(username, password):
-    with open('users.json', 'r') as json_file:
-        data = json.load(json_file)
+    try:
+        with open('users.json', 'r') as json_file:
+            data = json.load(json_file)
+    except FileNotFoundError:
+        return "user-database file not found"
+    except Exception as e:
+        return "An unexpected error occurred: {str(e)}"
     data[username]=password
     with open('users.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
