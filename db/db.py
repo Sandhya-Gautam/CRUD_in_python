@@ -42,9 +42,9 @@ class DBConn:
                     self.databases=data[self.username]
                 return "Connection successful"
             else:
-                return "Invalid password"
+                raise ValueError("Invalid input")
         else:
-            return "No such username"
+            raise ValueError("Invalid input")
     
     def close_conn(self):
         if self.conn:
@@ -92,15 +92,15 @@ class DBConn:
                 self.update_relationalDatabase()
                 return Database(name, self)
             else:
-                return f"Database '{name}' already exists"
+                raise ValueError( f"Database '{name}' already exists")
         else:
-            return "No active connection. Cannot create database."
+            raise ConnectionError("No active connection. Cannot create database.")
     
     def get_database(self):
         if self.conn:
             return self.databases
         else:
-            return "Connection failed. Cannot access database."
+            raise ConnectionError("Connection failed. Cannot access database.")
 
 
 class Database:
@@ -111,11 +111,10 @@ class Database:
         
     def update(self, key, value):
         if not self.connection.conn:
-            print("No active database connection")
-            return
+            raise ConnectionError("No active database connection")
         if self.name not in self.connection.databases:
-            print("No such database in connection")
-            return
+            raise ValueError("No such database in connection")
+            
         try:
             with open(self.name+'.json', 'r') as json_file:
                 data = json.load(json_file)
@@ -131,11 +130,9 @@ class Database:
 
     def delete(self, key):
         if not self.connection.conn:
-            print("No active database connection")
-            return
+            raise ConnectionError("No active database connection")
         if self.name not in self.connection.databases:
-            print("No such database in connection")
-            return
+            raise ValueError("No such database in connection")
         try:
             with open(self.name+'.json', 'r') as json_file:
                 data = json.load(json_file)
@@ -154,11 +151,9 @@ class Database:
         	
     def read(self):
         if not self.connection.conn:
-            print("No active database connection")
-            return
+            raise ConnectionError("No active database connection")
         if self.name not in self.connection.databases:
-            print("No such database in connection")
-            return
+            raise ValueError("No such database in connection")
         try:
             with open('database.json', 'r') as json_file:
                 data = json.load(json_file)

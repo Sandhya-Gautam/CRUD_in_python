@@ -1,35 +1,32 @@
 from db.db import DBConn, Database
+from functools import wraps
 
-conn=DBConn("user1", "password123")
-result = conn.create_conn()
-print(result)
 
-def create_database(name):
-	if result:
-		return conn.create_database(name)
-	else:
-		return "connection failed"
+def check_connection(cls):
+	conn=DBConn(cls.username, cls.password)
+	if conn:
+		return cls
+	else: 
+		return False
+
+
+@check_connection
+class DatabaseManager:
+	def __init__(self, username, password):
+		self.username=username
+		self.password=password
+
+	def update(self,db, key , value):
+			db1=Database(db,self.conn)
+			return db1.update(key,value)
 	
-def update(db, key , value):
-	if result:
-		db1=Database(db)
-		db1.update(key,value)
-		return "database updated"
+	def read(self, db):
+		db1=Database(db,self.conn)
+		print(db1)
+		return db1.read()
 	
-def read(db):
-	if result:
-		return db.read()
-	else:
-		return "connection failed"
-	
-def delete(db, key):
-	if result:
-		db.delete(key)
-		return "key deleted"
-	else:
-		return "connection failed"
-
-def get_database():
-	return conn.get_database()
-
-
+	def delete(self,db, key):
+		db1=Database(db,self.conn)
+		db1.delete(key)
+		return True
+		

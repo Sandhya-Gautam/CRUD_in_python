@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException 
 from database.database import create_database, update, read, delete, get_database
-
 app = FastAPI()
 
 

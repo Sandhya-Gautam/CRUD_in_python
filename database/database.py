@@ -5,31 +5,56 @@ result = conn.create_conn()
 print(result)
 
 def create_database(name):
-	if result:
-		return conn.create_database(name)
-	else:
-		return "connection failed"
+	try:
+		if result:
+			return conn.create_database(name)
+		else:
+			raise ConnectionError("No established connection")
+	except ValueError as e:
+		return "An unexpected error occurred: {e}"
+	except ConnectionError as e:
+		return "An unexpected error occurred: {e}"
+
 	
 def update(db, key , value):
-	if result:
-		db1=Database(db,conn)
-		return db1.update(key,value)
-	
+	try:
+		if result:
+			db1=Database(db,conn)
+			return db1.update(key,value)
+		else:
+			raise ConnectionError("No established connection")
+	except ValueError as e:
+		return "An unexpected error occurred: {e}"
+	except ConnectionError as e:
+		return "An unexpected error occurred: {e}"
+
 def read(db):
-	if result:
-		db1=Database(db,conn)
-		print(db1)
-		return db1.read()
-	else:
-		return "connection failed"
+	try:
+		if result:
+			db1=Database(db,conn)
+			print(db1)
+			return db1.read()
+		else:
+			raise ConnectionError("No established connection")
+	except ValueError as e:
+		return "An unexpected error occurred: {e}"
+	except ConnectionError as e:
+		return "An unexpected error occurred: {e}"
+
 	
 def delete(db, key):
-	if result:
-		db1=Database(db,conn)
-		db1.delete(key)
-		return "key deleted"
-	else:
-		return "connection failed"
+	try:
+		if result:
+			db1=Database(db,conn)
+			db1.delete(key)
+			return "key deleted"
+		else:
+			raise ConnectionError("No established connection")
+	except ValueError as e:
+		return "An unexpected error occurred: {e}"
+	except ConnectionError as e:
+		return "An unexpected error occurred: {e}"
+
 
 def get_database():
 	return conn.get_database()
